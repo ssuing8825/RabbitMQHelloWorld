@@ -12,7 +12,9 @@ namespace Consumer
     {
         protected static IModel Model;
         protected static IConnection Connection;
-        protected static string QueueName = "HelloWorld";
+        protected static string ExchangeName = "logs";
+        protected static string QueueName;
+
         protected static string HostName = "localhost";
 
 
@@ -32,7 +34,13 @@ namespace Consumer
             connectionFactory.HostName = HostName;
             Connection = connectionFactory.CreateConnection();
             Model = Connection.CreateModel();
-            Model.QueueDeclare(QueueName, false, false, false, null);
+            Model.ExchangeDeclare(ExchangeName, "fanout");
+
+            QueueName = Model.QueueDeclare().QueueName;
+            Model.QueueBind(QueueName, ExchangeName,"");
+
+           
+
         }
 
         private static void Consume()
