@@ -64,7 +64,7 @@ namespace Subsciber
                     // The consumer was removed, either through
                     // channel or connection closure, or through the
                     // action of IModel.BasicCancel().
-                    break;
+                 //   break;
                 }
             }
         }

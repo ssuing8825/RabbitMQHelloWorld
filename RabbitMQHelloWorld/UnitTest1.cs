@@ -24,6 +24,17 @@ namespace RabbitMQHelloWorld
         }
 
         [TestMethod]
+        public void TestMethod2()
+        {
+            producer = new Producer(HOST_NAME, QUEUE_NAME);
+
+            for (int i = 0; i < 1000; i++)
+            {
+                producer.SendMessage(System.Text.Encoding.UTF8.GetBytes("Hello World" + i.ToString()));
+            }
+
+        }
+        [TestMethod]
         public void GetMessage()
         {
             //create the consumer
@@ -37,15 +48,15 @@ namespace RabbitMQHelloWorld
         }
 
         //delegate to post to UI thread
-     //   private delegate void showMessageDelegate(string message);
+        //   private delegate void showMessageDelegate(string message);
 
         //Callback for message receive
         public void handleMessage(byte[] message)
         {
-            Console.WriteLine(System.Text.Encoding.UTF8.GetString(message));
-           // showMessageDelegate s = new showMessageDelegate(richTextBox1.AppendText);
+      //      Console.WriteLine(System.Text.Encoding.UTF8.GetString(message));
+            // showMessageDelegate s = new showMessageDelegate(richTextBox1.AppendText);
 
-          //  this.Invoke(s, System.Text.Encoding.UTF8.GetString(message) + Environment.NewLine);
+            //  this.Invoke(s, System.Text.Encoding.UTF8.GetString(message) + Environment.NewLine);
         }
 
 
