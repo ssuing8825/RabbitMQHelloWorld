@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Producer", "Producer\Produc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consumer", "Consumer\Consumer.csproj", "{B8A469A9-D51F-434F-AF0D-FA5203166146}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMonitoring", "RabbitMonitoring\RabbitMonitoring.csproj", "{A4D3FB1D-1CCB-4BE6-BA3B-FFE24A4EA74E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMonitoringCreateCounters", "RabbitMonitoringCreateCounters\RabbitMonitoringCreateCounters.csproj", "{E061EE13-E222-436A-83F8-D1E913112B5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,14 @@ Global
 		{B8A469A9-D51F-434F-AF0D-FA5203166146}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8A469A9-D51F-434F-AF0D-FA5203166146}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8A469A9-D51F-434F-AF0D-FA5203166146}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4D3FB1D-1CCB-4BE6-BA3B-FFE24A4EA74E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4D3FB1D-1CCB-4BE6-BA3B-FFE24A4EA74E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4D3FB1D-1CCB-4BE6-BA3B-FFE24A4EA74E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4D3FB1D-1CCB-4BE6-BA3B-FFE24A4EA74E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E061EE13-E222-436A-83F8-D1E913112B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E061EE13-E222-436A-83F8-D1E913112B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E061EE13-E222-436A-83F8-D1E913112B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E061EE13-E222-436A-83F8-D1E913112B5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

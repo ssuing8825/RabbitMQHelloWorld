@@ -15,6 +15,7 @@ namespace Producer
         protected static IConnection Connection;
         protected static string ExchangeName = "logs";
         protected static string HostName = "localhost";
+        protected static string QueueName = "HelloWorld";
 
         static void Main(string[] args)
         {
@@ -27,16 +28,18 @@ namespace Producer
                 SendMessages();
                 Console.WriteLine("Press any key to send 1000 messages - enter xx to exit");
             }
-           
+
         }
 
         private static void SendMessages()
         {
             IBasicProperties basicProperties = Model.CreateBasicProperties();
-            
+
             for (int i = 0; i < 1000; i++)
             {
+                Model.BasicPublish("", QueueName, basicProperties, System.Text.Encoding.UTF8.GetBytes("Hello World: " + i.ToString()));
                 Model.BasicPublish(ExchangeName, string.Empty, basicProperties, System.Text.Encoding.UTF8.GetBytes("Hello World: " + i.ToString()));
+                System.Threading.Thread.Sleep(50);
                 Console.WriteLine(i);
             }
         }
@@ -48,7 +51,9 @@ namespace Producer
             connectionFactory.HostName = HostName;
             Connection = connectionFactory.CreateConnection();
             Model = Connection.CreateModel();
-            Model.ExchangeDeclare(ExchangeName,"fanout");
+            Model.QueueDeclare(QueueName, false, false, false, null);
+
+            Model.ExchangeDeclare(ExchangeName, "fanout");
         }
     }
 }
