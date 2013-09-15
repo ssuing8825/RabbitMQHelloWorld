@@ -9,7 +9,12 @@ namespace RabbitMonitoring
 {
     public class StatCollector : Worker
     {
-        private static PerformanceCounter AverageMessagesInQueue = new PerformanceCounter("RabbitMQMonitoringCategory2", "MessagesInQueue", false);
+        private static PerformanceCounter Memory = new PerformanceCounter("Rabbit.HelloWorld", "Memory", "HelloWorldInstance", false);
+        private static PerformanceCounter NumberOfMessages = new PerformanceCounter("Rabbit.HelloWorld", "Number of Messages", "HelloWorldInstance", false);
+        private static PerformanceCounter NumberOfMessagesReady = new PerformanceCounter("Rabbit.HelloWorld", "Number of Messages ready", "HelloWorldInstance", false);
+        private static PerformanceCounter NumberOfMessagesUnAck = new PerformanceCounter("Rabbit.HelloWorld", "Number of Messages Unacknowledged", "HelloWorldInstance", false);
+        private static PerformanceCounter NumberOfConsumers = new PerformanceCounter("Rabbit.HelloWorld", "Number Consumers", "HelloWorldInstance", false);
+        private static PerformanceCounter NumberOfActiveConsumers = new PerformanceCounter("Rabbit.HelloWorld", "Number Active Consumers", "HelloWorldInstance", false);
 
         protected override void DoWork()
         {
@@ -18,7 +23,7 @@ namespace RabbitMonitoring
             c.BaseAddress = new Uri("http://localhost:15672");
             c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-         //   Console.WriteLine("Example Worker is doing something.");
+            //   Console.WriteLine("Example Worker is doing something.");
             HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, "/api/queues/%2f/HelloWorld");
             req.Headers.Authorization =
                      new AuthenticationHeaderValue(
@@ -28,83 +33,32 @@ namespace RabbitMonitoring
                                  string.Format("{0}:{1}", "guest", "guest"))));
 
 
-            var dtconverter = new IsoDateTimeConverter {DateTimeFormat = "yyyy-MM-dd hh:mm:ss"};
-          //  "2013-09-13 7:18:49"
+            var dtconverter = new IsoDateTimeConverter { DateTimeFormat = "yyyy-MM-dd hh:mm:ss" };
+            //  "2013-09-13 7:18:49"
 
             c.SendAsync(req).ContinueWith(gg =>
                 {
                     gg.Result.Content.ReadAsStringAsync().ContinueWith(ddd =>
                         {
-                            Console.WriteLine("sdfdsfwewe");
+
                             string r = ddd.Result;
-                            Console.WriteLine(r);
+                            Console.WriteLine("CollectingStats");
                             try
                             {
-                                var dasd = JsonConvert.DeserializeObject<QueueInfo>(r, dtconverter);
-                                AverageMessagesInQueue.RawValue = dasd.messages;
-                                
-                                Console.WriteLine("Messages {0}", dasd.messages);
+                                var queueInfo = JsonConvert.DeserializeObject<QueueInfo>(r, dtconverter);
+                                Memory.RawValue = queueInfo.memory;
+                                NumberOfMessages.RawValue = queueInfo.messages;
+                                NumberOfMessagesReady.RawValue = queueInfo.messages_ready;
+                                NumberOfMessagesUnAck.RawValue = queueInfo.messages_unacknowledged;
+                                NumberOfConsumers.RawValue = queueInfo.consumers;
+                                NumberOfActiveConsumers.RawValue = queueInfo.active_consumers;
                             }
                             catch (Exception exception)
                             {
-
                                 Console.WriteLine(exception);
-
                             }
-
-
-
-
                         });
-                    Console.WriteLine("asdf");
                 });
-
-            //    c.GetStringAsync(@"http://localhost:15672/api/queues/%2f/Build.Tests.Stubs").ContinueWith(gg =>
-            //        {
-            //            string r = gg.Result;
-            //            Console.WriteLine(r);
-            //            var dasd = JsonConvert.DeserializeObject<QueueInfo>(r);
-            //            Console.WriteLine(dasd.memory);
-            //        }
-            //);
-
-            //    Debug.WriteLine("Example Worker is doing something.");
-
-
-
-            //c.Se(req).ContinueWith(respTask =>
-            //    {
-
-            //        respTask.Result.Content.ReadAsStringAsync().ContinueWith(gg =>
-            //            {
-            //                Console.WriteLine(gg.Result);
-            //                // gg.Result
-            //            });
-
-            //Console.WriteLine("Response: {0}", respTask.Result.Content.ReadAsStreamAsync().ContinueWith(t =>
-            //    {
-            //       Console.WriteLine(t.Result); 
-            //    }));
-
-            //    });
-
-
-            //c.SendAsync(req).ContinueWith(respTask =>
-            //{
-
-            //    respTask.Result.Content.ReadAsStringAsync().ContinueWith(t =>
-            //    {
-            //        var dasd = JsonConvert.DeserializeObject<QueueInfo>(t.Result);
-
-            //        Console.WriteLine(dasd.memory);
-            //    });
-            //});
-
-
-
-
-
-
         }
     }
 }

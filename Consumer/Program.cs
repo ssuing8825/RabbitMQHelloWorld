@@ -61,7 +61,7 @@ namespace Consumer
                     byte[] body = e.Body;
                     // ... process the message
                     Console.WriteLine(System.Text.Encoding.UTF8.GetString(body));
-                    System.Threading.Thread.Sleep(10);
+                 //   System.Threading.Thread.Sleep(10);
                     Model.BasicAck(e.DeliveryTag, false);
                 }
                 catch (OperationInterruptedException ex)
