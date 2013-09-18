@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMonitoring", "RabbitM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMonitoringCreateCounters", "RabbitMonitoringCreateCounters\RabbitMonitoringCreateCounters.csproj", "{E061EE13-E222-436A-83F8-D1E913112B5D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMonitoring.Tests", "RabbitMonitoring.Tests\RabbitMonitoring.Tests.csproj", "{44C81E07-B2A2-4278-8F59-1B39C043896E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{E061EE13-E222-436A-83F8-D1E913112B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E061EE13-E222-436A-83F8-D1E913112B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E061EE13-E222-436A-83F8-D1E913112B5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44C81E07-B2A2-4278-8F59-1B39C043896E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44C81E07-B2A2-4278-8F59-1B39C043896E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44C81E07-B2A2-4278-8F59-1B39C043896E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44C81E07-B2A2-4278-8F59-1B39C043896E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
