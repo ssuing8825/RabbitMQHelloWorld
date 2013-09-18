@@ -21,6 +21,18 @@ namespace RabbitMonitoring
         private static PerformanceCounter NumberOfConsumers = new PerformanceCounter("Rabbit.HelloWorld", "Number Consumers", "HelloWorldInstance", false);
         private static PerformanceCounter NumberOfActiveConsumers = new PerformanceCounter("Rabbit.HelloWorld", "Number Active Consumers", "HelloWorldInstance", false);
 
+        //private static PerformanceCounter AvgMessage = new PerformanceCounter("Rabbit.HelloWorld", "Average Messages", "HelloWorldInstance", false);
+        //private static PerformanceCounter AvgMessageBase = new PerformanceCounter("Rabbit.HelloWorld", "Average Messages base", "HelloWorldInstance", false);
+
+        private static PerformanceCounter avg_ingress_rate = new PerformanceCounter("Rabbit.HelloWorld", "avg_ingress_rate", "HelloWorldInstance", false);
+        private static PerformanceCounter avg_egress_rate = new PerformanceCounter("Rabbit.HelloWorld", "avg_egress_rate", "HelloWorldInstance", false);
+        private static PerformanceCounter avg_ack_ingress_rate = new PerformanceCounter("Rabbit.HelloWorld", "avg_ack_ingress_rate", "HelloWorldInstance", false);
+        private static PerformanceCounter avg_ack_egress_rate = new PerformanceCounter("Rabbit.HelloWorld", "avg_ack_egress_rate", "HelloWorldInstance", false);
+
+        private static int numberOfMessages = 0;
+
+
+
         public void LogQueueInfo(string hostName, string userName, string password, string queueName)
         {
 
@@ -29,7 +41,7 @@ namespace RabbitMonitoring
             c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             //   Console.WriteLine("Example Worker is doing something.");
-            HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, string.Format("/api/queues/%2f/{0}",queueName));
+            HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, string.Format("/api/queues/%2f/{0}", queueName));
             req.Headers.Authorization =
                      new AuthenticationHeaderValue(
                          "Basic",
@@ -47,7 +59,7 @@ namespace RabbitMonitoring
                 {
 
                     string r = ddd.Result;
-                    Console.WriteLine("CollectingStats");
+                    // Console.WriteLine("CollectingStats");
                     try
                     {
                         var queueInfo = JsonConvert.DeserializeObject<QueueInfo>(r, dtconverter);
@@ -57,9 +69,24 @@ namespace RabbitMonitoring
                         NumberOfMessagesUnAck.RawValue = queueInfo.messages_unacknowledged;
                         NumberOfConsumers.RawValue = queueInfo.consumers;
                         NumberOfActiveConsumers.RawValue = queueInfo.active_consumers;
+                        avg_ingress_rate.RawValue = Convert.ToInt32(queueInfo.backing_queue_status.avg_ingress_rate);
+                        avg_egress_rate.RawValue = Convert.ToInt32(queueInfo.backing_queue_status.avg_egress_rate);
+                        avg_ack_egress_rate.RawValue = Convert.ToInt32(queueInfo.backing_queue_status.avg_ack_egress_rate);
+                        avg_ack_ingress_rate.RawValue = Convert.ToInt32(queueInfo.backing_queue_status.avg_ack_ingress_rate);
 
-                        Console.WriteLine("avg_egress_rate {0}", queueInfo.backing_queue_status.avg_egress_rate);
-                        Console.WriteLine("avg_ingress_rate {0}", queueInfo.backing_queue_status.avg_ingress_rate);
+                        //  AvgMessage.RawValue = queueInfo.messages;
+                        //if (numberOfMessages == 0)
+                        //    numberOfMessages = queueInfo.messages;
+
+                        //AvgMessage.IncrementBy(queueInfo.messages);
+                        //Console.WriteLine("Increment by: {0}", queueInfo.messages);
+                        //AvgMessageBase.Increment();
+                        //numberOfMessages = queueInfo.messages;
+
+
+
+                        //Console.WriteLine("avg_egress_rate {0}", queueInfo.backing_queue_status.avg_egress_rate);
+                        //Console.WriteLine("avg_ingress_rate {0}", queueInfo.backing_queue_status.avg_ingress_rate);
                     }
                     catch (Exception exception)
                     {

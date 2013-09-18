@@ -4,6 +4,10 @@
     using System.ComponentModel;
     using System.Diagnostics;
 
+
+    //http://flyingpies.wordpress.com/2011/04/07/performance-counters-types-with-the-net-framework/
+    
+
     public class PerformanceCounterSetup
     {
 
@@ -19,7 +23,6 @@
                     {
                         needToRecreateCategory = true;
                     }
-
                 }
 
                 if (!needToRecreateCategory)
@@ -72,6 +75,28 @@
                        new CounterCreationData("Number Active Consumers",
                                                 "Number Active Consumers",
                                                 PerformanceCounterType.NumberOfItems32),
+
+                       new CounterCreationData("avg_ingress_rate",
+                                                "Number Active Consumers",
+                                                PerformanceCounterType.NumberOfItems32),
+                       new CounterCreationData("avg_egress_rate",
+                                                "Number Active Consumers",
+                                                PerformanceCounterType.NumberOfItems32),
+                       new CounterCreationData("avg_ack_ingress_rate",
+                                                "Number Active Consumers",
+                                                PerformanceCounterType.NumberOfItems32),
+                       new CounterCreationData("avg_ack_egress_rate",
+                                                "Number Active Consumers",
+                                                PerformanceCounterType.NumberOfItems32),
+
+
+                       //new CounterCreationData("Average Messages",
+                       //                         "Average Messages",
+                       //                         PerformanceCounterType.AverageCount64),
+                       //new CounterCreationData("Average Messages base",
+                       //                         "Average Messages",
+                       //                         PerformanceCounterType.AverageBase),
+
                         //new CounterCreationData("# of msgs successfully processed / sec",
                         //                        "The current number of messages processed successfully by the transport per second.",
                         //                        PerformanceCounterType.RateOfCountsPerSecond32),

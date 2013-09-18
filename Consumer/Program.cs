@@ -17,7 +17,7 @@ namespace Consumer
         protected static string QueueName;
 
         protected static string HostName = "localhost";
-
+        private static Random random = new Random();
 
         static void Main(string[] args)
         {
@@ -37,9 +37,9 @@ namespace Consumer
             Model = Connection.CreateModel();
             Model.QueueDeclare(DirectQueueName, false, false, false, null);
             
-            Model.ExchangeDeclare(ExchangeName, "fanout");
-            QueueName = Model.QueueDeclare().QueueName;
-            Model.QueueBind(QueueName, ExchangeName,"");
+      //      Model.ExchangeDeclare(ExchangeName, "fanout");
+        //    QueueName = Model.QueueDeclare().QueueName;
+         //   Model.QueueBind(QueueName, ExchangeName,"");
 
            
 
@@ -61,7 +61,10 @@ namespace Consumer
                     byte[] body = e.Body;
                     // ... process the message
                     Console.WriteLine(System.Text.Encoding.UTF8.GetString(body));
-                 //   System.Threading.Thread.Sleep(10);
+                    
+                    
+                    
+                    System.Threading.Thread.Sleep(random.Next(10,1000));
                     Model.BasicAck(e.DeliveryTag, false);
                 }
                 catch (OperationInterruptedException ex)

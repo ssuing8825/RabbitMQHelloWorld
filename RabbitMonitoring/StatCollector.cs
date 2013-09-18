@@ -39,14 +39,14 @@ namespace RabbitMonitoring
             }
 
 
-            if (!TelnetCheck.IsRabbitTelnet("localhost", 15672))
-            {
-                _logger.WriteEntry("Telnet Check Failed Failed.", EventLogEntryType.Error, 500);
-            }
-            else
-            {
-                _logger.WriteEntry("Telnet to RabbitMQ Successful.", EventLogEntryType.SuccessAudit, 100);
-            }
+            //if (!TelnetCheck.IsRabbitTelnet("localhost", 15672))
+            //{
+            //    _logger.WriteEntry("Telnet Check Failed Failed.", EventLogEntryType.Error, 500);
+            //}
+            //else
+            //{
+            //    _logger.WriteEntry("Telnet to RabbitMQ Successful.", EventLogEntryType.SuccessAudit, 100);
+            //}
 
 
             var queueLogger = new QueueChecker();

@@ -13,7 +13,7 @@ namespace RabbitMonitoring
 
         protected Worker()
         {
-            this.SleepPeriod = new TimeSpan(0, 0, 0, 10);
+            this.SleepPeriod = new TimeSpan(0, 0, 0, 1);
             this.Id = Guid.NewGuid();
         }
 
