@@ -40,8 +40,7 @@ namespace RabbitMonitoring.Tests
         {
             var ac = new AlivenessChecker();
 
-            Assert.IsTrue(ac.IsAlive("localhost", "guest", "guest"));
-
+            Assert.IsTrue(ac.IsAlive("localhost", "guest", "guest").Status == StatusCode.OK);
         }
 
 

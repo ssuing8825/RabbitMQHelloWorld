@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="AmqpPingCheck.cs" />
     <Compile Include="AlivenessChecker.cs" />
+    <Compile Include="StatusCode.cs" />
     <Compile Include="TelnetCheck.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="PingCheck.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueueChecker.cs" />
     <Compile Include="StatCollector.cs" />
+    <Compile Include="TestResult.cs" />
     <Compile Include="Worker.cs" />
   </ItemGroup>
   <ItemGroup>

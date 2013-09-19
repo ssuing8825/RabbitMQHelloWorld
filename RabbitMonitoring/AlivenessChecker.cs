@@ -15,7 +15,7 @@ namespace RabbitMonitoring
     public class AlivenessChecker
     {
 
-        public bool IsAlive(string hostName, string userName, string password)
+        public TestResult IsAlive(string hostName, string userName, string password)
         {
             using (HttpClient c = new HttpClient())
             {
@@ -23,33 +23,40 @@ namespace RabbitMonitoring
                 c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, string.Format("/api/aliveness-test/%2f"));
-                req.Headers.Authorization =
-                         new AuthenticationHeaderValue(
-                             "Basic",
-                             Convert.ToBase64String(
-                                 System.Text.ASCIIEncoding.ASCII.GetBytes(
-                                     string.Format("{0}:{1}", userName, password))));
+                req.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", userName, password))));
 
-
-                var sendTask = c.SendAsync(req);
-               
-
-                c.SendAsync(req).ContinueWith(gg =>
+                try
                 {
-                    if (!gg.Result.IsSuccessStatusCode)
-                    {
-                        gg.Result.Content.ReadAsStringAsync().ContinueWith(r =>
-                        {
-                            //Need to do something with this string.
-                            string result = r.Result;
-                            return false;
+                    var sendTask = c.SendAsync(req).Result;
+                    if (sendTask.IsSuccessStatusCode) 
+                        return new SuccessResult();
 
-                        });
-                    }
-                  
-                });
+                    return new CriticalResult { Description = "The  aliveness-test api returned a negative result. Please check the health of the RabbitMQ server" };
+
+                    //http://rabbitmq.1065348.n5.nabble.com/API-aliveness-test-td2170.html
+                    //http://rabbitmq.1065348.n5.nabble.com/Permissions-for-aliveness-test-user-td23654.html
+                }
+                catch (Exception ex)
+                {
+                    return new TestResult() { Status = StatusCode.Unknown, Description = "The IsAlive test was unable to reach the aliveness-test api test" };
+                }
+
+                //c.SendAsync(req).ContinueWith(gg =>
+                //{
+                //    if (!gg.Result.IsSuccessStatusCode)
+                //    {
+                //        gg.Result.Content.ReadAsStringAsync().ContinueWith(r =>
+                //        {
+                //            //Need to do something with this string.
+                //            string result = r.Result;
+                //            return false;
+
+                //        });
+                //    }
+
+                //});
             }
-            return true;
+         
         }
     }
 }
