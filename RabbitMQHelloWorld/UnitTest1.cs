@@ -11,7 +11,7 @@ namespace RabbitMQHelloWorld
     public class UnitTest1
     {
         public string HOST_NAME = "localhost";
-        public string QUEUE_NAME = "helloWorld";
+        public string QUEUE_NAME = "HelloWorld";
 
         private Consumer consumer;
         private Producer producer;
