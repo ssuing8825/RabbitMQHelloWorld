@@ -14,7 +14,7 @@ namespace Producer
         protected static IModel Model;
         protected static IConnection Connection;
         protected static string ExchangeName = "logs";
-        protected static string HostName = "localhost";
+        protected static string HostName = "frws2356.geicoapp.net";
         protected static string QueueName = "HelloWorld";
 
         static void Main(string[] args)

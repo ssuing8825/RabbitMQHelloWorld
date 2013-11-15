@@ -11,28 +11,35 @@ namespace RabbitMonitoring.Tests
     [TestClass]
     public class UnitTest1
     {
-        private string hostName = "localhost";
+        private string hostName;
+        private string url = "http://frws2356.geicoapp.net:15672/";
         private string userName = "guest";
         private string password = "guest";
         private string queueName = "HelloWorld";
 
 
+        [TestInitialize]
+        public void Intialize()
+        {
+            hostName = new Uri(url).Host;
+        }
+
         [TestMethod]
         public void TestConnection()
         {
-            Assert.IsTrue(new AmqpPingCheck().IsConnected("localhost", "guest", "guest"));
+            Assert.IsTrue(new AmqpPingCheck().IsConnected(hostName, "guest", "guest"));
         }
 
         [TestMethod]
         public void PingTest()
         {
-            Assert.IsTrue(PingCheck.IsRabbitPingable("localhost"));
+            Assert.IsTrue(PingCheck.IsRabbitPingable(hostName));
         }
 
         [TestMethod]
         public void TelNetTest()
         {
-            Assert.IsTrue(TelnetCheck.IsRabbitTelnet("localhost", 15672));
+            Assert.IsTrue(TelnetCheck.IsRabbitTelnet(hostName, 15672));
         }
 
         [TestMethod]
@@ -40,15 +47,14 @@ namespace RabbitMonitoring.Tests
         {
             var ac = new AlivenessChecker();
 
-            Assert.IsTrue(ac.IsAlive("localhost", "guest", "guest").Status == StatusCode.OK);
+            Assert.IsTrue(ac.IsAlive(hostName, "guest", "guest").Status == StatusCode.OK);
         }
-
 
         [TestMethod]
         public void QueueInfoSerializeTest()
         {
             HttpClient c = new HttpClient();
-            c.BaseAddress = new Uri("http://localhost:15672");
+            c.BaseAddress = new Uri(url);
             c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             //   Console.WriteLine("Example Worker is doing something.");

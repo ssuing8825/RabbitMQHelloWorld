@@ -37,7 +37,7 @@ namespace RabbitMonitoring
         {
 
             HttpClient c = new HttpClient();
-            c.BaseAddress = new Uri("http://localhost:15672");
+            c.BaseAddress = new Uri(Properties.Settings.Default.HostAddress);
             c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             //   Console.WriteLine("Example Worker is doing something.");

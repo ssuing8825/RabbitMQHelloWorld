@@ -12,7 +12,7 @@ namespace Consumer
     {
         protected static IModel Model;
         protected static IConnection Connection;
-        protected static string ExchangeName = "logs";
+        protected static string ExchangeName = "helloworld";
         protected static string DirectQueueName = "HelloWorld";
         protected static string QueueName;
 
@@ -21,50 +21,58 @@ namespace Consumer
 
         static void Main(string[] args)
         {
-            Init();
-            Console.WriteLine("Queue is initialized");
-            Consume();
+            //InitDirect();
+            InitSubscriber();
+
+
+               Consume();
+
 
 
         }
 
-        private static void Init()
+        private static void InitSubscriber()
         {
+            var connectionFactory = new ConnectionFactory();
+            connectionFactory.HostName = HostName;
+            Connection = connectionFactory.CreateConnection();
+            Model = Connection.CreateModel();
+            Model.ExchangeDeclare(ExchangeName, "fanout");
+            QueueName = Model.QueueDeclare().QueueName;
+            Model.QueueBind(QueueName, ExchangeName, "");
+
+        }
+
+        private static void InitDirect()
+        {
+
 
             var connectionFactory = new ConnectionFactory();
             connectionFactory.HostName = HostName;
             Connection = connectionFactory.CreateConnection();
             Model = Connection.CreateModel();
             Model.QueueDeclare(DirectQueueName, false, false, false, null);
-            
-      //      Model.ExchangeDeclare(ExchangeName, "fanout");
-        //    QueueName = Model.QueueDeclare().QueueName;
-         //   Model.QueueBind(QueueName, ExchangeName,"");
-
-           
+            QueueName = DirectQueueName;
 
         }
 
         private static void Consume()
         {
             QueueingBasicConsumer consumer = new QueueingBasicConsumer(Model);
-          //  String consumerTag = Model.BasicConsume(QueueName, false, consumer);
 
-            String consumerTag = Model.BasicConsume(DirectQueueName, false, consumer);
+            String consumerTag = Model.BasicConsume(QueueName, false, consumer);
 
             while (true)
             {
                 try
                 {
-                    RabbitMQ.Client.Events.BasicDeliverEventArgs e = (RabbitMQ.Client.Events.BasicDeliverEventArgs)consumer.Queue.Dequeue();
+                    var e = (RabbitMQ.Client.Events.BasicDeliverEventArgs)consumer.Queue.Dequeue();
                     IBasicProperties props = e.BasicProperties;
                     byte[] body = e.Body;
                     // ... process the message
                     Console.WriteLine(System.Text.Encoding.UTF8.GetString(body));
-                    
-                    
-                    
-                    System.Threading.Thread.Sleep(random.Next(10,1000));
+
+                    System.Threading.Thread.Sleep(random.Next(10, 1000));
                     Model.BasicAck(e.DeliveryTag, false);
                 }
                 catch (OperationInterruptedException ex)

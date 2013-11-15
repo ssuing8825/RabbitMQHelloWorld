@@ -19,7 +19,7 @@ namespace RabbitMonitoring
         {
             using (HttpClient c = new HttpClient())
             {
-                c.BaseAddress = new Uri("http://localhost:15672");
+                c.BaseAddress = new Uri(Properties.Settings.Default.HostAddress);
                 c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, string.Format("/api/aliveness-test/%2f"));

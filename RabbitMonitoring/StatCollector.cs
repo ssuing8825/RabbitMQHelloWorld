@@ -9,13 +9,17 @@ namespace RabbitMonitoring
 {
     public class StatCollector : Worker
     {
-        private string hostName = "localhost";
+        private string hostName;
         private string userName = "guest";
         private string password = "guest";
         private EventLog _logger = new EventLog("RabbitMQ", System.Environment.MachineName,"Monitoring");
 
         protected override void DoWork()
         {
+
+            var url = new Uri(Properties.Settings.Default.HostAddress);
+            hostName = url.Host;
+
 
             using (var pingCheck = new AmqpPingCheck())
             {
@@ -29,7 +33,7 @@ namespace RabbitMonitoring
                 }
             }
 
-            if (!PingCheck.IsRabbitPingable("localhost"))
+            if (!PingCheck.IsRabbitPingable(hostName))
             {
                 _logger.WriteEntry("Ping Check Failed Failed.", EventLogEntryType.Error, 500);
             }
